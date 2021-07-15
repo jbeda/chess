@@ -1,0 +1,9 @@
+# CMake output directory (usually)
+build/
+
+# .NET output directories
+bin/
+obj/
+
+# Python cache
+__pycache__/
