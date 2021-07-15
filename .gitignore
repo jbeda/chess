@@ -7,3 +7,9 @@ obj/
 
 # Python cache
 __pycache__/
+
+# Visual Studio Code settings
+.vscode/
+
+# Visual Studio cache
+.vs/
