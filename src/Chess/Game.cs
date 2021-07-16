@@ -4,49 +4,49 @@ namespace Chess
     {
         public Game()
         {
-            this.Log = new Log();
-            this.Log.Print("Initializing chess...");
-            this.Board = new Board(this);
-            this.Backend = null;
-            this.mRunning = true;
+            Log = new Log();
+            Log.Print("Initializing chess...");
+            Board = new Board(this);
+            Backend = null;
+            mRunning = true;
         }
         public void SetBackend(IBackend backend)
         {
-            this.Backend = backend;
-            this.Log.Print(string.Format("Backend: {0}", this.Backend.Name));
+            Backend = backend;
+            Log.Print(string.Format("Backend: {0}", Backend.Name));
         }
         public void Run()
         {
-            if (this.Backend == null)
+            if (Backend == null)
             {
-                this.Log.Print("Chess cannot run without a backend!");
+                Log.Print("Chess cannot run without a backend!");
                 return;
             }
-            while (this.mRunning)
+            while (mRunning)
             {
-                this.Update();
-                this.Render();
+                Update();
+                Render();
             }
-            this.Log.WriteLog();
+            Log.WriteLog();
         }
         public void Quit()
         {
-            this.mRunning = false;
+            mRunning = false;
         }
         private void Update()
         {
-            this.Backend.Update();
-            if (this.Backend.InputManager[Key.Q].Down)
+            Backend.Update();
+            if (Backend.InputManager[Key.Q].Down)
             {
-                this.Quit();
+                Quit();
             }
             // todo: update
         }
         private void Render()
         {
-            IRenderer renderer = this.Backend.Renderer;
+            IRenderer renderer = Backend.Renderer;
             renderer.ClearBuffer();
-            renderer.Render(this.Board);
+            renderer.Render(Board);
             renderer.Present();
         }
         public IBackend Backend { get; private set; }

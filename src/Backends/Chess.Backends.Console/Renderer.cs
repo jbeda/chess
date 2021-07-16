@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Chess.Backends.Console
@@ -6,83 +7,87 @@ namespace Chess.Backends.Console
     {
         public RenderBuffer()
         {
-            this.mSize = new Vec2(0);
-            this.mBuffer = new List<char>();
+            mSize = new Vec2(0);
+            mBuffer = new List<char>();
         }
         public void Clear()
         {
-            for (int x = 0; x < this.mSize.X; x++)
+            for (int x = 0; x < mSize.X; x++)
             {
-                for (int y = 0; y < this.mSize.Y; y++)
+                for (int y = 0; y < mSize.Y; y++)
                 {
-                    this.mBuffer[Util.FlattenPosition(new Vec2(x, y), this.mSize.X)] = ' ';
+                    mBuffer[Util.FlattenPosition(new Vec2(x, y), mSize.X)] = ' ';
                 }
             }
         }
         public void Resize(Vec2 newSize)
         {
-            Vec2 originalSize = this.mSize;
-            this.mSize = newSize;
+            Vec2 originalSize = mSize;
+            mSize = newSize;
             var originalData = new List<char>();
-            originalData.AddRange(this.mBuffer);
-            this.mBuffer = new List<char>(this.mSize.X * this.mSize.Y);
-            int lesserWidth = (this.mSize.X > originalSize.X) ? originalSize.X : this.mSize.X;
-            int lesserHeight = (this.mSize.Y > originalSize.Y) ? originalSize.Y : this.mSize.Y;
-            for (int x = 0; x < this.mSize.X; x++)
+            originalData.AddRange(mBuffer);
+            mBuffer = new List<char>();
+            for (int i = 0; i < mSize.X * mSize.Y; i++)
             {
-                for (int y = 0; y < this.mSize.Y; y++)
+                mBuffer.Add(' ');
+            }
+            int lesserWidth = (mSize.X > originalSize.X) ? originalSize.X : mSize.X;
+            int lesserHeight = (mSize.Y > originalSize.Y) ? originalSize.Y : mSize.Y;
+            for (int x = 0; x < mSize.X; x++)
+            {
+                for (int y = 0; y < mSize.Y; y++)
                 {
-                    int index = Util.FlattenPosition(new Vec2(x, y), this.mSize.X);
+                    int index = Util.FlattenPosition(new Vec2(x, y), mSize.X);
                     if (x < lesserWidth && y < lesserHeight)
                     {
-                        this.mBuffer[index] = originalData[Util.FlattenPosition(new Vec2(x, y), originalSize.X)];
-                    }
-                    else
-                    {
-                        this.mBuffer[index] = ' ';
+                        mBuffer[index] = originalData[Util.FlattenPosition(new Vec2(x, y), originalSize.X)];
                     }
                 }
             }
         }
         private void VerifyPosition(Vec2 position)
         {
-            if (Util.IsOutOfRange(position, this.mSize))
+            if (Util.IsOutOfRange(position, mSize))
             {
                 var requiredSize = new Vec2
                 {
-                    X = position.X - 1,
-                    Y = position.Y - 1
+                    X = position.X + 1,
+                    Y = position.Y + 1
                 };
                 var newSize = new Vec2
                 {
-                    X = requiredSize.X > this.mSize.X ? requiredSize.X : this.mSize.X,
-                    Y = requiredSize.Y > this.mSize.Y ? requiredSize.Y : this.mSize.Y
+                    X = requiredSize.X > mSize.X ? requiredSize.X : mSize.X,
+                    Y = requiredSize.Y > mSize.Y ? requiredSize.Y : mSize.Y
                 };
-                this.Resize(newSize);
+                Resize(newSize);
             }
         }
         public Vec2 Size
         {
             get
             {
-                return this.mSize;
+                return mSize;
             }
             set
             {
-                this.Resize(value);
+                if (value == mSize)
+                {
+                    return;
+                }
+                Resize(value);
             }
         }
         public char this[Vec2 position]
         {
             get
             {
-                this.VerifyPosition(position);
-                return this.mBuffer[Util.FlattenPosition(position, this.mSize.X)];
+                VerifyPosition(position);
+                return mBuffer[Util.FlattenPosition(position, mSize.X)];
             }
             set
             {
-                this.VerifyPosition(position);
-                this.mBuffer[Util.FlattenPosition(position, this.mSize.X)] = value;
+                VerifyPosition(position);
+                mBuffer[Util.FlattenPosition(position, mSize.X)] = value;
             }
         }
         private Vec2 mSize;
@@ -92,35 +97,105 @@ namespace Chess.Backends.Console
     {
         public Renderer(ConsoleBackend backend)
         {
-            this.mBackend = backend;
-            this.mBuffer = new RenderBuffer();
+            mBackend = backend;
+            mBuffer = new RenderBuffer();
         }
         public void Present()
         {
             string text = "";
-            for (int y = 0; y < this.mBuffer.Size.Y; y++)
+            for (int y = 0; y < mBuffer.Size.Y; y++)
             {
-                for (int x = 0; x < this.mBuffer.Size.X; x++)
+                for (int x = 0; x < mBuffer.Size.X; x++)
                 {
-                    text += this.mBuffer[new Vec2(x, y)];
+                    text += mBuffer[new Vec2(x, y)];
                 }
-                if (y < this.mBuffer.Size.Y - 1)
+                if (y < mBuffer.Size.Y - 1)
                 {
                     text += '\n';
                 }
             }
-            System.Console.Clear();
+            System.Console.SetCursorPosition(0, 0);
             System.Console.Write(text);
         }
         public void Render(Board board)
         {
-            // todo: render board
+            var border = GetBorder(new Vec2(board.Width, board.Height));
+            foreach (Vec2 position in border)
+            {
+                mBuffer[position] = GetCharacter(position, border);
+            }
+        }
+        private static Vec2 GetTilePosition(Vec2 logicalPosition)
+        {
+            return new Vec2(1) + (logicalPosition * 2);
+        }
+        private static HashSet<Vec2> GetBorder(Vec2 size)
+        {
+            var border = new HashSet<Vec2>();
+            for (int x = 0; x < size.X; x++)
+            {
+                for (int y = 0; y < size.Y; y++)
+                {
+                    var tilePos = GetTilePosition(new Vec2(x, y));
+                    for (int _x = tilePos.X - 1; _x < tilePos.X + 2; _x++)
+                    {
+                        for (int _y = tilePos.Y - 1; _y < tilePos.Y + 2; _y++)
+                        {
+                            var position = new Vec2(_x, _y);
+                            if (position != tilePos)
+                            {
+                                border.Add(position);
+                            }
+                        }
+                    }
+                }
+            }
+            return border;
+        }
+        private static char GetCharacter(Vec2 characterPosition, HashSet<Vec2> positions)
+        {
+            const int UP = 0b0001;
+            const int DOWN = 0b0010;
+            const int LEFT = 0b0100;
+            const int RIGHT = 0b1000;
+            int surroundings = 0;
+            foreach (Vec2 position in positions)
+            {
+                var difference = position - characterPosition;
+                if (difference.TaxicabLength() != 1)
+                {
+                    continue;
+                }
+                surroundings |= (difference.X, difference.Y) switch
+                {
+                    (0, -1) => UP,
+                    (0, 1) => DOWN,
+                    (-1, 0) => LEFT,
+                    (1, 0) => RIGHT,
+                    _ => 0
+                };
+            }
+            return surroundings switch
+            {
+                UP | DOWN => '\u2551',
+                LEFT | RIGHT => '\u2550',
+                DOWN | RIGHT => '\u2554',
+                DOWN | LEFT => '\u2557',
+                UP | RIGHT => '\u255A',
+                UP | LEFT => '\u255D',
+                DOWN | LEFT | RIGHT => '\u2566',
+                UP | LEFT | RIGHT => '\u2569',
+                UP | DOWN | RIGHT => '\u2560',
+                UP | DOWN | LEFT => '\u2563',
+                UP | DOWN | LEFT | RIGHT => '\u256C',
+                _ => ' '
+            };
         }
         public void ClearBuffer()
         {
             mBuffer.Clear();
         }
-        public IBackend Backend { get { return this.mBackend; } }
+        public IBackend Backend { get { return mBackend; } }
         private readonly ConsoleBackend mBackend;
         private readonly RenderBuffer mBuffer;
     }

@@ -7,23 +7,22 @@ namespace Chess
     {
         internal Log()
         {
-            this.Print("Log initialized");
+            mMessages = new List<string>();
+            Print("Log initialized");
         }
         internal void WriteLog()
         {
-            using (StreamWriter writer = new StreamWriter("chess.log"))
+            using var writer = new StreamWriter("chess.log");
+            foreach (string message in mMessages)
             {
-                foreach (string message in this.mMessages)
-                {
-                    writer.WriteLine(message);
-                }
-                writer.Close();
+                writer.WriteLine(message);
             }
+            writer.Close();
         }
         public void Print(string text)
         {
-            this.mMessages.Add(text); // i should probably do something more than this later
+            mMessages.Add(text); // i should probably do something more than this later
         }
-        private List<string> mMessages = new List<string>();
+        private readonly List<string> mMessages;
     }
 }
