@@ -13,3 +13,6 @@ __pycache__/
 
 # Visual Studio cache
 .vs/
+
+# Program log
+chess.log

@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chess", "Chess\Chess.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chess.Program", "Chess.Program\Chess.Program.csproj", "{81D4ACED-9A64-4C08-9539-A7E2083FCB82}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backends", "Backends", "{2D9C1B51-8096-4816-B24A-7CAE70399701}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chess.Backends.Console", "Backends\Chess.Backends.Console\Chess.Backends.Console.csproj", "{C7009BBA-4D76-4FF8-9144-240F20D96B2A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,5 +48,20 @@ Global
 		{81D4ACED-9A64-4C08-9539-A7E2083FCB82}.Release|x64.Build.0 = Release|Any CPU
 		{81D4ACED-9A64-4C08-9539-A7E2083FCB82}.Release|x86.ActiveCfg = Release|Any CPU
 		{81D4ACED-9A64-4C08-9539-A7E2083FCB82}.Release|x86.Build.0 = Release|Any CPU
+		{C7009BBA-4D76-4FF8-9144-240F20D96B2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7009BBA-4D76-4FF8-9144-240F20D96B2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7009BBA-4D76-4FF8-9144-240F20D96B2A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C7009BBA-4D76-4FF8-9144-240F20D96B2A}.Debug|x64.Build.0 = Debug|Any CPU
+		{C7009BBA-4D76-4FF8-9144-240F20D96B2A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C7009BBA-4D76-4FF8-9144-240F20D96B2A}.Debug|x86.Build.0 = Debug|Any CPU
+		{C7009BBA-4D76-4FF8-9144-240F20D96B2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7009BBA-4D76-4FF8-9144-240F20D96B2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7009BBA-4D76-4FF8-9144-240F20D96B2A}.Release|x64.ActiveCfg = Release|Any CPU
+		{C7009BBA-4D76-4FF8-9144-240F20D96B2A}.Release|x64.Build.0 = Release|Any CPU
+		{C7009BBA-4D76-4FF8-9144-240F20D96B2A}.Release|x86.ActiveCfg = Release|Any CPU
+		{C7009BBA-4D76-4FF8-9144-240F20D96B2A}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C7009BBA-4D76-4FF8-9144-240F20D96B2A} = {2D9C1B51-8096-4816-B24A-7CAE70399701}
 	EndGlobalSection
 EndGlobal
