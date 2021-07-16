@@ -1,6 +1,5 @@
-using System;
-
-namespace Chess {
+namespace Chess
+{
     public sealed class Game
     {
         public Game()
