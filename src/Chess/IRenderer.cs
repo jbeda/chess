@@ -4,6 +4,7 @@ namespace Chess
     {
         IBackend Backend { get; }
         void Present();
-        // todo: add more methods, such as Render
+        void Render(Board board);
+        void ClearBuffer();
     }
 }

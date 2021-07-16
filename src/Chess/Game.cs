@@ -6,6 +6,7 @@ namespace Chess
         {
             this.Log = new Log();
             this.Log.Print("Initializing chess...");
+            this.Board = new Board(this);
             this.Backend = null;
             this.mRunning = true;
         }
@@ -43,10 +44,14 @@ namespace Chess
         }
         private void Render()
         {
-            // todo: render
+            IRenderer renderer = this.Backend.Renderer;
+            renderer.ClearBuffer();
+            renderer.Render(this.Board);
+            renderer.Present();
         }
         public IBackend Backend { get; private set; }
         public Log Log { get; private set; }
+        public Board Board { get; private set; }
         private bool mRunning;
     }
 }
