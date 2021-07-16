@@ -35,6 +35,10 @@ namespace Chess
         private void Update()
         {
             this.Backend.Update();
+            if (this.Backend.InputManager[Key.Q].Down)
+            {
+                this.Quit();
+            }
             // todo: update
         }
         private void Render()

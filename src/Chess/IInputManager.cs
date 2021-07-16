@@ -3,6 +3,12 @@ namespace Chess
     public struct KeyState
     {
         public bool Up, Down, Held;
+        public static KeyState Default()
+        {
+            var state = new KeyState();
+            state.Up = state.Down = state.Held = false;
+            return state;
+        }
     }
     public enum Key
     {
