@@ -12,5 +12,11 @@ namespace Chess
         {
             return (position.Y * width) + position.X;
         }
+        public static bool IsOutOfRange(Vec2 position, Vec2 size)
+        {
+            bool x = position.X >= size.X;
+            bool y = position.Y >= size.Y;
+            return x || y;
+        }
     }
 }
