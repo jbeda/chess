@@ -8,7 +8,7 @@ namespace Chess {
             this.Log = new Log();
             this.Log.Print("Initializing chess...");
             this.Backend = null;
-            this.Renderer = null;
+            this.mRunning = true;
         }
         public void SetBackend(IBackend backend)
         {
@@ -22,17 +22,28 @@ namespace Chess {
                 this.Log.Print("Chess cannot run without a backend!");
                 return;
             }
-            this.Renderer = this.Backend.CreateRenderer();
-            if (this.Renderer == null)
+            while (this.mRunning)
             {
-                this.Log.Print("Failed to create renderer!");
-                return;
+                this.Update();
+                this.Render();
             }
-            // todo: game loop
             this.Log.WriteLog();
         }
+        public void Quit()
+        {
+            this.mRunning = false;
+        }
+        private void Update()
+        {
+            this.Backend.Update();
+            // todo: update
+        }
+        private void Render()
+        {
+            // todo: render
+        }
         public IBackend Backend { get; private set; }
-        public IRenderer Renderer { get; private set; }
         public Log Log { get; private set; }
+        private bool mRunning;
     }
 }
