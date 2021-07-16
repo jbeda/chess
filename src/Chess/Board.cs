@@ -6,7 +6,7 @@ namespace Chess
     // taken from wikipedia (https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation)
     public sealed class FENString
     {
-        private FENString(List<List<Piece>> pieces, PieceColor active, List<Piece> castlingAvailability, Vec2 enPassantTarget,
+        public FENString(List<List<Piece>> pieces, PieceColor active, List<Piece> castlingAvailability, Vec2 enPassantTarget,
             int halfmoveClock, int fullmoveNumber)
         {
             mPieces = pieces;
