@@ -1,8 +1,8 @@
-﻿namespace Chess.Backends.Console
+﻿namespace Chess.Frontends.Console
 {
-    public sealed class ConsoleBackend : IBackend
+    public sealed class ConsoleFrontend : IFrontend
     {
-        public ConsoleBackend(Game game)
+        public ConsoleFrontend(Game game)
         {
             mGame = game;
             Renderer = new Renderer(this);

@@ -1,6 +1,6 @@
 namespace Chess
 {
-    public interface IBackend
+    public interface IFrontend
     {
         IRenderer Renderer { get; }
         IInputManager InputManager { get; }

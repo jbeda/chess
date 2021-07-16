@@ -7,19 +7,19 @@ namespace Chess
             Log = new Log();
             Log.Print("Initializing chess...");
             Board = new Board(this);
-            Backend = null;
+            Frontend = null;
             mRunning = true;
         }
-        public void SetBackend(IBackend backend)
+        public void SetFrontend(IFrontend frontend)
         {
-            Backend = backend;
-            Log.Print(string.Format("Backend: {0}", Backend.Name));
+            Frontend = frontend;
+            Log.Print(string.Format("Frontend: {0}", Frontend.Name));
         }
         public void Run()
         {
-            if (Backend == null)
+            if (Frontend == null)
             {
-                Log.Print("Chess cannot run without a backend!");
+                Log.Print("Chess cannot run without a frontend!");
                 return;
             }
             while (mRunning)
@@ -35,8 +35,8 @@ namespace Chess
         }
         private void Update()
         {
-            Backend.Update();
-            if (Backend.InputManager[Key.Q].Down)
+            Frontend.Update();
+            if (Frontend.InputManager[Key.Q].Down)
             {
                 Quit();
             }
@@ -44,12 +44,12 @@ namespace Chess
         }
         private void Render()
         {
-            IRenderer renderer = Backend.Renderer;
+            IRenderer renderer = Frontend.Renderer;
             renderer.ClearBuffer();
             renderer.Render(Board);
             renderer.Present();
         }
-        public IBackend Backend { get; private set; }
+        public IFrontend Frontend { get; private set; }
         public Log Log { get; private set; }
         public Board Board { get; private set; }
         private bool mRunning;

@@ -2,7 +2,7 @@ namespace Chess
 {
     public interface IRenderer
     {
-        IBackend Backend { get; }
+        IFrontend Frontend { get; }
         void Present();
         void Render(Board board);
         void ClearBuffer();

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Chess.Backends.Console
+namespace Chess.Frontends.Console
 {
     internal sealed class RenderBuffer
     {
@@ -95,9 +95,9 @@ namespace Chess.Backends.Console
     }
     internal sealed class Renderer : IRenderer
     {
-        public Renderer(ConsoleBackend backend)
+        public Renderer(ConsoleFrontend frontend)
         {
-            mBackend = backend;
+            mFrontend = frontend;
             mBuffer = new RenderBuffer();
         }
         public void Present()
@@ -195,8 +195,8 @@ namespace Chess.Backends.Console
         {
             mBuffer.Clear();
         }
-        public IBackend Backend { get { return mBackend; } }
-        private readonly ConsoleBackend mBackend;
+        public IFrontend Frontend { get { return mFrontend; } }
+        private readonly ConsoleFrontend mFrontend;
         private readonly RenderBuffer mBuffer;
     }
 }

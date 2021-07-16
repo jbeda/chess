@@ -7,9 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chess", "Chess\Chess.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chess.Program", "Chess.Program\Chess.Program.csproj", "{81D4ACED-9A64-4C08-9539-A7E2083FCB82}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backends", "Backends", "{2D9C1B51-8096-4816-B24A-7CAE70399701}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Frontends", "Frontends", "{2D9C1B51-8096-4816-B24A-7CAE70399701}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chess.Backends.Console", "Backends\Chess.Backends.Console\Chess.Backends.Console.csproj", "{C7009BBA-4D76-4FF8-9144-240F20D96B2A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chess.Frontends.Console", "Frontends\Chess.Frontends.Console\Chess.Frontends.Console.csproj", "{C7009BBA-4D76-4FF8-9144-240F20D96B2A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

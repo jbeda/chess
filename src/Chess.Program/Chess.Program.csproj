@@ -2,7 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Chess\Chess.csproj" />
-    <ProjectReference Include="..\Backends\Chess.Backends.Console\Chess.Backends.Console.csproj" />
+    <ProjectReference Include="..\Frontends\Chess.Frontends.Console\Chess.Frontends.Console.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

@@ -18,7 +18,7 @@ namespace Chess
     }
     public interface IInputManager
     {
-        IBackend Backend { get; }
+        IFrontend Frontend { get; }
         KeyState this[Key key] { get; }
         KeyState GetKey(Key key);
     }

@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 
-namespace Chess.Backends.Console
+namespace Chess.Frontends.Console
 {
     internal class InputManager : IInputManager
     {
-        public InputManager(ConsoleBackend backend)
+        public InputManager(ConsoleFrontend frontend)
         {
-            mBackend = backend;
+            mFrontend = frontend;
             ResetStates();
         }
         public KeyState this[Key key]
@@ -76,8 +76,8 @@ namespace Chess.Backends.Console
             }
             throw new InvalidCastException();
         }
-        public IBackend Backend { get { return mBackend; } }
-        private readonly ConsoleBackend mBackend;
+        public IFrontend Frontend { get { return mFrontend; } }
+        private readonly ConsoleFrontend mFrontend;
         private Dictionary<Key, KeyState> mKeyStates;
     }
 }

@@ -1,4 +1,4 @@
-﻿using Chess.Backends.Console;
+﻿using Chess.Frontends.Console;
 
 namespace Chess.Program
 {
@@ -7,7 +7,7 @@ namespace Chess.Program
         static void Main(string[] args)
         {
             Game game = new Game();
-            game.SetBackend(new ConsoleBackend(game));
+            game.SetFrontend(new ConsoleFrontend(game));
             game.Run();
         }
     }
