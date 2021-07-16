@@ -122,10 +122,11 @@ namespace Chess.Frontends.Console
             var border = GetBorder(new Vec2(board.Width, board.Height));
             foreach (Vec2 position in border)
             {
-                mBuffer[position] = GetCharacter(position, border);
+                mBuffer[position] = GetBorderCharacter(position, border);
             }
+            RenderPieces(board);
         }
-        private static Vec2 GetTilePosition(Vec2 logicalPosition)
+        private static Vec2 GetRenderPosition(Vec2 logicalPosition)
         {
             return new Vec2(1) + (logicalPosition * 2);
         }
@@ -136,7 +137,7 @@ namespace Chess.Frontends.Console
             {
                 for (int y = 0; y < size.Y; y++)
                 {
-                    var tilePos = GetTilePosition(new Vec2(x, y));
+                    var tilePos = GetRenderPosition(new Vec2(x, y));
                     for (int _x = tilePos.X - 1; _x < tilePos.X + 2; _x++)
                     {
                         for (int _y = tilePos.Y - 1; _y < tilePos.Y + 2; _y++)
@@ -152,7 +153,7 @@ namespace Chess.Frontends.Console
             }
             return border;
         }
-        private static char GetCharacter(Vec2 characterPosition, HashSet<Vec2> positions)
+        private static char GetBorderCharacter(Vec2 characterPosition, HashSet<Vec2> positions)
         {
             const int UP = 0b0001;
             const int DOWN = 0b0010;
@@ -190,6 +191,39 @@ namespace Chess.Frontends.Console
                 UP | DOWN | LEFT | RIGHT => '\u256C',
                 _ => ' '
             };
+        }
+        private static char GetPieceCharacter(Piece piece)
+        {
+            const char baseCharacter = '\u2654';
+            int pieceOffset = piece.Type switch
+            {
+                PieceType.Pawn => 5,
+                PieceType.Knight => 4,
+                PieceType.Bishop => 3,
+                PieceType.Rook => 2,
+                PieceType.Queen => 1,
+                PieceType.King => 0,
+                _ => throw new Exception("Invalid piece type!")
+            };
+            int colorOffset = (piece.Color == PieceColor.Black) ? 6 : 0;
+            return (char)(baseCharacter + pieceOffset + colorOffset);
+        }
+        private void RenderPieces(Board board)
+        {
+            for (int x = 0; x < board.Width; x++)
+            {
+                for (int y = 0; y < board.Height; y++)
+                {
+                    var position = new Vec2(x, y);
+                    Tile tile = board[position];
+                    if (tile.Piece != null)
+                    {
+                        var renderPosition = GetRenderPosition(position);
+                        char character = GetPieceCharacter(tile.Piece);
+                        mBuffer[renderPosition] = character;
+                    }
+                }
+            }
         }
         public void ClearBuffer()
         {
