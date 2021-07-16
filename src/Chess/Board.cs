@@ -1,5 +1,39 @@
-﻿namespace Chess
+﻿using System;
+using System.Collections.Generic;
+
+namespace Chess
 {
+    // taken from wikipedia (https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation)
+    public sealed class FENString
+    {
+        private FENString(List<List<Piece>> pieces, PieceColor active, List<Piece> castlingAvailability, Vec2 enPassantTarget,
+            int halfmoveClock, int fullmoveNumber)
+        {
+            mPieces = pieces;
+            mActive = active;
+            mCastlingAvailability = castlingAvailability;
+            mEnPassantTarget = enPassantTarget;
+            mHalfmoveClock = halfmoveClock;
+            mFullmoveNumber = fullmoveNumber;
+        }
+        public static FENString Parse(string fenString)
+        {
+            // todo: parse
+            throw new NotImplementedException();
+        }
+        public List<List<Piece>> Pieces => mPieces;
+        public PieceColor Active => mActive;
+        public List<Piece> CastlingAvailability => mCastlingAvailability;
+        public Vec2 EnPassantTarget => mEnPassantTarget;
+        public int HalfmoveClock => mHalfmoveClock;
+        public int FullmoveNumber => mFullmoveNumber;
+        private readonly List<List<Piece>> mPieces;
+        private readonly PieceColor mActive;
+        private readonly List<Piece> mCastlingAvailability;
+        private readonly Vec2 mEnPassantTarget;
+        private readonly int mHalfmoveClock;
+        private readonly int mFullmoveNumber;
+    }
     public struct Tile
     {
         public Tile(Vec2 position)
@@ -27,6 +61,10 @@
                     this[position] = new Tile(position);
                 }
             }
+        }
+        public void Load(FENString fenString)
+        {
+            throw new NotImplementedException();
         }
         public int Width { get { return mWidth; } }
         public int Height { get { return mHeight; } }
