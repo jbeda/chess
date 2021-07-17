@@ -6,7 +6,7 @@ namespace Chess.Program
     {
         static void Main(string[] args)
         {
-            Game game = new Game();
+            var game = new Game();
             game.SetFrontend(new ConsoleFrontend(game));
             game.Run();
         }

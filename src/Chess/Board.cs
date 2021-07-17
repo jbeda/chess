@@ -34,9 +34,9 @@ namespace Chess
         private readonly int mHalfmoveClock;
         private readonly int mFullmoveNumber;
     }
-    public struct Tile
+    public class Tile
     {
-        public Tile(Vec2 position)
+        internal Tile(Vec2 position)
         {
             Color = ((position.X + position.Y) % 2 == 0) ? PieceColor.White : PieceColor.Black;
             Piece = null;

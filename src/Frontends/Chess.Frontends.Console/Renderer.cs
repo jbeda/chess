@@ -194,19 +194,18 @@ namespace Chess.Frontends.Console
         }
         private static char GetPieceCharacter(Piece piece)
         {
-            const char baseCharacter = '\u2654';
-            int pieceOffset = piece.Type switch
+            char pieceCharacter = piece.Type switch
             {
-                PieceType.Pawn => 5,
-                PieceType.Knight => 4,
-                PieceType.Bishop => 3,
-                PieceType.Rook => 2,
-                PieceType.Queen => 1,
-                PieceType.King => 0,
+                PieceType.Pawn => 'P',
+                PieceType.Knight => 'N',
+                PieceType.Bishop => 'B',
+                PieceType.Rook => 'R',
+                PieceType.Queen => 'Q',
+                PieceType.King => 'K',
                 _ => throw new Exception("Invalid piece type!")
             };
-            int colorOffset = (piece.Color == PieceColor.Black) ? 6 : 0;
-            return (char)(baseCharacter + pieceOffset + colorOffset);
+            int colorOffset = (piece.Color == PieceColor.Black) ? 'a' - 'A' : 0;
+            return (char)(pieceCharacter + colorOffset);
         }
         private void RenderPieces(Board board)
         {
