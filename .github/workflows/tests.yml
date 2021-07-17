@@ -1,4 +1,4 @@
-name: build
+name: tests
 on: [ push ]
 jobs:
   build:
@@ -31,3 +31,7 @@ jobs:
       shell: bash
       run: |
         python -m scripts build
+    - name: test
+      shell: bash
+      run: |
+        python -m scripts test
