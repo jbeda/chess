@@ -4,7 +4,7 @@ namespace Chess
 {
     public sealed class Ruleset
     {
-        public static bool IsLegalMove(Board board, Piece piece, Vec2 move)
+        public static bool IsMoveLegal(Board board, Piece piece, Vec2 move)
         {
             Vec2? nullablePosition = null;
             for (int rank = 0; rank < board.Height; rank++)
@@ -24,6 +24,10 @@ namespace Chess
                 throw new ArgumentException("The piece was not found on the board!");
             }
             var position = (Vec2)nullablePosition;
+            if (Util.IsOutOfBounds(position + move, new Vec2(board.Width, board.Height)))
+            {
+                return false;
+            }
             if (move.TaxicabLength() == 0)
             {
                 return false;
@@ -56,6 +60,30 @@ namespace Chess
                     {
                         return false;
                     }
+                    return true;
+                case PieceType.Knight:
+                    // a knight can only move in an L-like shape
+                    if (move.TaxicabLength() != 3)
+                    {
+                        return false;
+                    }
+                    if (move.X == 3 || move.Y == 3)
+                    {
+                        return false;
+                    }
+                    return true;
+                case PieceType.Bishop:
+                    int length = move.TaxicabLength();
+                    // the move must be diagonal, so the length must be an even number
+                    if (length % 2 != 0)
+                    {
+                        return false;
+                    }
+                    if (move.X * 2 != length)
+                    {
+                        return false;
+                    }
+                    // if the previous check passed, then move.Y * 2 must also equal the taxicab length
                     return true;
                 // todo: implement more piece cases
             }

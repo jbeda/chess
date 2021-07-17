@@ -56,7 +56,7 @@ namespace Chess
             {
                 return false;
             }
-            if (!Ruleset.IsLegalMove(this, piece, difference))
+            if (!Ruleset.IsMoveLegal(this, piece, difference))
             {
                 return false;
             }
