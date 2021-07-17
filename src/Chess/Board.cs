@@ -43,10 +43,30 @@ namespace Chess
         }
         
         // Using definition of FENStrings from wikipedia
-        // (https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation)
-public void LoadFromFENString(string fenString)
+        // https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation
+        public void LoadFromFENString(string fenString)
         {
             throw new NotImplementedException();
+        }
+        public bool Move(Vec2 piecePosition, Vec2 newPosition)
+        {
+            var difference = newPosition - piecePosition;
+            Piece piece = this[piecePosition].Piece;
+            if (piece == null)
+            {
+                return false;
+            }
+            if (!Ruleset.IsLegalMove(this, piece, difference))
+            {
+                return false;
+            }
+            // todo: check for en passant stuff,
+            // capture a piece if theres any on the target square,
+            // and cycle turns
+            // however, we only need this implementation, for now
+            this[piecePosition].Piece = null;
+            this[piecePosition].Piece = piece;
+            return true;
         }
         public int Width { get { return mWidth; } }
         public int Height { get { return mHeight; } }
@@ -64,8 +84,6 @@ public void LoadFromFENString(string fenString)
             }
         }
         public Game Game { get; private set; }
-
-
         private readonly int mWidth, mHeight;
         private readonly Tile[] mTiles;
         // Which color has the next move

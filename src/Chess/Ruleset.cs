@@ -4,8 +4,26 @@ namespace Chess
 {
     public sealed class Ruleset
     {
-        public static bool IsLegalMove(Piece piece, Vec2 move)
+        public static bool IsLegalMove(Board board, Piece piece, Vec2 move)
         {
+            Vec2? nullablePosition = null;
+            for (int rank = 0; rank < board.Height; rank++)
+            {
+                for (int file = 0; file < board.Width; file++)
+                {
+                    var currentPosition = new Vec2(file, rank);
+                    Tile tile = board[currentPosition];
+                    if (tile.Piece == piece)
+                    {
+                        nullablePosition = currentPosition;
+                    }
+                }
+            }
+            if (nullablePosition == null)
+            {
+                throw new ArgumentException("The piece was not found on the board!");
+            }
+            var position = (Vec2)nullablePosition;
             if (move.TaxicabLength() == 0)
             {
                 return false;
@@ -20,7 +38,7 @@ namespace Chess
                         return false;
                     }
                     // pawns may only move diagonally if the move will capture another piece of different affiliation
-                    Tile nextTile = piece.Board[piece.Position + move];
+                    Tile nextTile = board[position + move];
                     bool canCapture = nextTile.Piece != null;
                     if (canCapture)
                     {
