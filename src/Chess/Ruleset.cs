@@ -73,19 +73,65 @@ namespace Chess
                     }
                     return true;
                 case PieceType.Bishop:
-                    int length = move.TaxicabLength();
-                    // the move must be diagonal, so the length must be an even number
-                    if (length % 2 != 0)
                     {
-                        return false;
-                    }
-                    if (move.X * 2 != length)
-                    {
-                        return false;
+                        int length = move.TaxicabLength();
+                        // the move must be diagonal, so the length must be an even number
+                        if (length % 2 != 0)
+                        {
+                            return false;
+                        }
+                        if (move.X * 2 != length)
+                        {
+                            return false;
+                        }
                     }
                     // if the previous check passed, then move.Y * 2 must also equal the taxicab length
                     return true;
-                // todo: implement more piece cases
+                case PieceType.Rook:
+                    // a rook may only move in one cardinal direction
+                    return !((Math.Abs(move.X) > 0) && (Math.Abs(move.Y) > 0));
+                case PieceType.Queen:
+                    // the queen can move in one direction per move, but as far as she wants
+                    {
+                        int directionCount = 0;
+                        {
+                            int length = move.TaxicabLength();
+                            if ((length % 2 == 0) && (move.X * 2 == length))
+                            {
+                                directionCount++;
+                            }
+                        }
+                        if ((Math.Abs(move.X) > 0) && (move.Y == 0))
+                        {
+                            directionCount++;
+                        }
+                        else if ((move.X == 0) && (Math.Abs(move.Y) > 0))
+                        {
+                            directionCount++;
+                        }
+                        return directionCount == 1;
+                    }
+                case PieceType.King:
+                    // the king, much like the queen, can move in one direction and one direction only, however, he can only move one space at a time
+                    {
+                        int directionCount = 0;
+                        {
+                            int length = move.TaxicabLength();
+                            if ((length % 2 == 0) && (move.X * 2 == length) && (length == 2))
+                            {
+                                directionCount++;
+                            }
+                        }
+                        if ((Math.Abs(move.X) > 0) && (move.Y == 0) && (move.TaxicabLength() == 1))
+                        {
+                            directionCount++;
+                        }
+                        else if ((move.X == 0) && (Math.Abs(move.Y) > 0) && (move.TaxicabLength() == 1))
+                        {
+                            directionCount++;
+                        }
+                        return directionCount == 1;
+                    }
             }
             throw new Exception("This piece type is not implemented!");
         }
