@@ -16,7 +16,7 @@ namespace Chess.Frontends.Console
             {
                 for (int y = 0; y < mSize.Y; y++)
                 {
-                    mBuffer[Util.FlattenPosition(new Vec2(x, y), mSize.X)] = ' ';
+                    mBuffer[Util.FlattenPosition(new Vec2(x, y), mSize)] = ' ';
                 }
             }
         }
@@ -37,10 +37,10 @@ namespace Chess.Frontends.Console
             {
                 for (int y = 0; y < mSize.Y; y++)
                 {
-                    int index = Util.FlattenPosition(new Vec2(x, y), mSize.X);
+                    int index = Util.FlattenPosition(new Vec2(x, y), mSize);
                     if (x < lesserWidth && y < lesserHeight)
                     {
-                        mBuffer[index] = originalData[Util.FlattenPosition(new Vec2(x, y), originalSize.X)];
+                        mBuffer[index] = originalData[Util.FlattenPosition(new Vec2(x, y), originalSize)];
                     }
                 }
             }
@@ -82,12 +82,12 @@ namespace Chess.Frontends.Console
             get
             {
                 VerifyPosition(position);
-                return mBuffer[Util.FlattenPosition(position, mSize.X)];
+                return mBuffer[Util.FlattenPosition(position, mSize)];
             }
             set
             {
                 VerifyPosition(position);
-                mBuffer[Util.FlattenPosition(position, mSize.X)] = value;
+                mBuffer[Util.FlattenPosition(position, mSize)] = value;
             }
         }
         private Vec2 mSize;

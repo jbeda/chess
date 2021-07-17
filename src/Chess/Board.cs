@@ -72,12 +72,12 @@ namespace Chess
         {
             get
             {
-                int index = Util.FlattenPosition(position, mWidth);
+                int index = Util.FlattenPosition(position, new Vec2(mWidth, mHeight));
                 return mTiles[index];
             }
             internal set
             {
-                int index = Util.FlattenPosition(position, mWidth);
+                int index = Util.FlattenPosition(position, new Vec2(mWidth, mHeight));
                 mTiles[index] = value;
             }
         }

@@ -23,6 +23,15 @@
             Type = type;
             Board = board;
         }
+        public bool Move(Vec2 moveDifference)
+        {
+            if (!Ruleset.IsLegalMove(this, moveDifference))
+            {
+                return false;
+            }
+            
+            return true;
+        }
         public Vec2 Position { get; private set; }
         public PieceColor Color { get; private set; }
         public PieceType Type { get; private set; }

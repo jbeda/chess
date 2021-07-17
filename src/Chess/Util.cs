@@ -8,9 +8,9 @@ namespace Chess
 {
     public sealed class Util
     {
-        public static int FlattenPosition(Vec2 position, int width)
+        public static int FlattenPosition(Vec2 position, Vec2 size)
         {
-            return (position.Y * width) + position.X;
+            return ((size.Y - position.Y - 1) * size.X) + position.X;
         }
         public static bool IsOutOfRange(Vec2 position, Vec2 size)
         {
