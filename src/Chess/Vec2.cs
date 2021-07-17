@@ -37,8 +37,27 @@ namespace Chess
             return v;
         }
         public string Algebraic {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            get { 
+                if (X < 0 || X >= 8 || Y < 0 || Y >=8 )
+                {
+                    throw new ArgumentException();
+                }
+                return Char.ToString((char)('a' + Y)) + Char.ToString((char)('1' + X));
+            }
+            set 
+            { 
+                if (value.Length != 2) {
+                    throw new ArgumentException();
+                }
+                var y = value[0] - 'a';
+                var x = value[1] - '1';
+                if (x < 0 || x >= 8 || y < 0 || y >=8 )
+                {
+                    throw new ArgumentException();
+                }
+                Y = y;
+                X = x;
+            }
         }
         public int TaxicabLength()
         {
