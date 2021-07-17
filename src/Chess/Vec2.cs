@@ -3,6 +3,8 @@ using System.Runtime.InteropServices;
 
 namespace Chess
 {
+    // Vec2 represents a position on the board using just numbers.  It aligns
+    // with standard Algebraic notation in that a1 is (0,0). 
     [StructLayout(LayoutKind.Sequential)]
     public struct Vec2
     {
@@ -15,8 +17,18 @@ namespace Chess
             X = x;
             Y = y;
         }
+        // This is the column (file) on the board (a-h in algebraic notation).
+        // It is zero based.
         public int X { get; set; }
+
+        // This is the row (rank) on the board (1-8 in algebraic notation). It
+        // is zero based.
         public int Y { get; set; }
+
+        public string Algebraic {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
         public int TaxicabLength()
         {
             return Math.Abs(X) + Math.Abs(Y);
