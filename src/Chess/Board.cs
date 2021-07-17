@@ -3,37 +3,6 @@ using System.Collections.Generic;
 
 namespace Chess
 {
-    // taken from wikipedia (https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation)
-    public sealed class FENString
-    {
-        public FENString(List<List<Piece>> pieces, PieceColor active, List<Piece> castlingAvailability, Vec2 enPassantTarget,
-            int halfmoveClock, int fullmoveNumber)
-        {
-            mPieces = pieces;
-            mActive = active;
-            mCastlingAvailability = castlingAvailability;
-            mEnPassantTarget = enPassantTarget;
-            mHalfmoveClock = halfmoveClock;
-            mFullmoveNumber = fullmoveNumber;
-        }
-        public static FENString Parse(string fenString)
-        {
-            // todo: parse
-            throw new NotImplementedException();
-        }
-        public List<List<Piece>> Pieces => mPieces;
-        public PieceColor Active => mActive;
-        public List<Piece> CastlingAvailability => mCastlingAvailability;
-        public Vec2 EnPassantTarget => mEnPassantTarget;
-        public int HalfmoveClock => mHalfmoveClock;
-        public int FullmoveNumber => mFullmoveNumber;
-        private readonly List<List<Piece>> mPieces;
-        private readonly PieceColor mActive;
-        private readonly List<Piece> mCastlingAvailability;
-        private readonly Vec2 mEnPassantTarget;
-        private readonly int mHalfmoveClock;
-        private readonly int mFullmoveNumber;
-    }
     public class Tile
     {
         internal Tile(Vec2 position)
@@ -46,6 +15,16 @@ namespace Chess
     }
     public sealed class Board
     {
+        // Bit Field to represent the set of castle moves still available
+        [Flags]
+        public enum CastleAvailableFlags {
+            None = 0,
+            WhiteQueen = 1,
+            WhiteKing = 2,
+            BlackQueen = 4,
+            BlackKing = 8,
+            All = WhiteQueen | WhiteKing | BlackQueen | BlackKing,
+        }
         public Board(Game game, int width = 8, int height = 8)
         {
             game.Log.Print(string.Format("Creating board (width: {0}, height: {1})", width, height));
@@ -62,7 +41,10 @@ namespace Chess
                 }
             }
         }
-        public void Load(FENString fenString)
+        
+        // Using definition of FENStrings from wikipedia
+        // (https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation)
+public void LoadFromFENString(string fenString)
         {
             throw new NotImplementedException();
         }
@@ -82,7 +64,23 @@ namespace Chess
             }
         }
         public Game Game { get; private set; }
+
+
         private readonly int mWidth, mHeight;
         private readonly Tile[] mTiles;
+        // Which color has the next move
+        public PieceColor Active { get; set; } = PieceColor.White;
+        public CastleAvailableFlags CastleAvailable { get; set; } = CastleAvailableFlags.All;
+        // If a pawn has just made a two-square move, this is the position
+        // "behind" the pawn. This is recorded regardless of whether there is a
+        // pawn in position to make an en passant capture.
+        public Vec2? EnPassantTarget { get; set; } = null;
+        // The number of halfmoves since the last capture or pawn advance, used
+        // for the fifty-move rule.
+        public int HalfmoveClock { get; set; } = 0;
+        // The number of the full move. It starts at 1, and is incremented after
+        // Black's move.
+        public int FullmoveNumber { get; set; } = 1;
+
     }
 }
