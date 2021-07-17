@@ -6,9 +6,9 @@ namespace Chess.Tests
     public class Vec2_Algebraic {
         [Theory]
         [InlineData("a1", 0, 0)]
-        [InlineData("c1", 0, 2)]
-        [InlineData("a8", 7, 0)]
-        [InlineData("h1", 0, 7)]
+        [InlineData("c1", 2, 0)]
+        [InlineData("a8", 0, 7)]
+        [InlineData("h1", 7, 0)]
         [InlineData("h8", 7, 7)]
         public void Set(string algebraic, int expectedX, int expectedY) 
         {
@@ -33,9 +33,9 @@ namespace Chess.Tests
 
         [Theory]
         [InlineData(0, 0, "a1")]
-        [InlineData(0, 2, "c1")]
-        [InlineData(7, 0, "a8")]
-        [InlineData(0, 7, "h1")]
+        [InlineData(2, 0, "c1")]
+        [InlineData(0, 7, "a8")]
+        [InlineData(7, 0, "h1")]
         [InlineData(7, 7, "h8")]
         public void Get(int x, int y, string algebraicExpected)
         {

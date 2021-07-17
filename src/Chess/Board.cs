@@ -80,6 +80,10 @@ namespace Chess
                     mTiles[index].Piece = p;
                     file++;
                 }
+                if (file != 8) {
+                    // One of the rows/ranks isn't fully specified
+                    throw new ArgumentException();
+                }
             }
 
             var activeString = sections[1];
@@ -114,15 +118,15 @@ namespace Chess
             }
 
             var halfmoveClockString = sections[4];
-            int halfmove;
-            if (!int.TryParse(halfmoveClockString, out halfmove)) {
+            int halfmoves;
+            if (!int.TryParse(halfmoveClockString, out halfmoves) || halfmoves < 0) {
                 throw new ArgumentException();
             }
-            HalfmoveClock = halfmove;
+            HalfmoveClock = halfmoves;
 
             var fullmovesString = sections[5];
             int fullmoves;
-            if (!int.TryParse(fullmovesString, out fullmoves)) {
+            if (!int.TryParse(fullmovesString, out fullmoves) || fullmoves < 0) {
                 throw new ArgumentException();
             }
         }

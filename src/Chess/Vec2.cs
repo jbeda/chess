@@ -42,15 +42,15 @@ namespace Chess
                 {
                     throw new ArgumentException();
                 }
-                return Char.ToString((char)('a' + Y)) + Char.ToString((char)('1' + X));
+                return Char.ToString((char)('a' + X)) + Char.ToString((char)('1' + Y));
             }
             set 
             { 
                 if (value.Length != 2) {
                     throw new ArgumentException();
                 }
-                var y = value[0] - 'a';
-                var x = value[1] - '1';
+                var x = value[0] - 'a';
+                var y = value[1] - '1';
                 if (x < 0 || x >= 8 || y < 0 || y >=8 )
                 {
                     throw new ArgumentException();
