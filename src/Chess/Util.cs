@@ -10,7 +10,7 @@ namespace Chess
     {
         public static int FlattenPosition(Vec2 position, Vec2 size)
         {
-            return ((size.Y - position.Y - 1) * size.X) + position.X;
+            return (position.Y * size.X) + position.X;
         }
         public static bool IsOutOfRange(Vec2 position, Vec2 size)
         {

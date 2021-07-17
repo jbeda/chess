@@ -143,7 +143,7 @@ namespace Chess
             // and cycle turns
             // however, we only need this implementation, for now
             this[piecePosition].Piece = null;
-            this[piecePosition].Piece = piece;
+            this[newPosition].Piece = piece;
             return true;
         }
         public int Width { get { return mBoardDims.X; } }
