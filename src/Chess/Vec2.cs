@@ -25,6 +25,17 @@ namespace Chess
         // is zero based.
         public int Y { get; set; }
 
+        public static implicit operator Vec2((int x, int y) t) => new Vec2(t.x, t.y);
+        public void Deconstruct(out int x, out int y) {
+            x = X;
+            y = Y;
+        }
+
+        public static Vec2 FromAlgebraic(string alg) {
+            var v = new Vec2(0);
+            v.Algebraic = alg;
+            return v;
+        }
         public string Algebraic {
             get { throw new NotImplementedException(); }
             set { throw new NotImplementedException(); }

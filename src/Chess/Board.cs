@@ -29,12 +29,11 @@ namespace Chess
         {
             game.Log.Print(string.Format("Creating board (width: {0}, height: {1})", width, height));
             Game = game;
-            mWidth = width;
-            mHeight = height;
-            mTiles = new Tile[mWidth * mHeight];
-            for (int x = 0; x < mWidth; x++)
+            mBoardDims = (width, height);
+            mTiles = new Tile[mBoardDims.X * mBoardDims.Y];
+            for (int x = 0; x < mBoardDims.X; x++)
             {
-                for (int y = 0; y < mHeight; y++)
+                for (int y = 0; y < mBoardDims.Y; y++)
                 {
                     var position = new Vec2(x, y);
                     this[position] = new Tile(position);
@@ -46,7 +45,86 @@ namespace Chess
         // https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation
         public void LoadFromFENString(string fenString)
         {
-            throw new NotImplementedException();
+            var sections = fenString.Split(' ');
+            if (sections.Length != 6) {
+                throw new ArgumentException();
+            }
+            
+            var posString = sections[0];
+            var ranks = posString.Split('/');
+            if (ranks.Length != 8) {
+                throw new ArgumentException();
+            }
+            // FENString encoding starts at rank 8, we reverse to start at rank 1
+            Array.Reverse(ranks);
+            for (int rank = 0; rank < 8; rank++) {
+                var rankString = ranks[rank];
+                var file = 0;
+                foreach (char pChar in rankString) {
+                    if (file >= 8) {
+                        // We have too many spots specified on this row/rank
+                        throw new ArgumentException();
+                    }
+                    var index = Util.FlattenPosition((file, rank), BoardDims);                    
+                    if (pChar >= '1' && pChar <= '8') {
+                        var numBlank = pChar - '0';
+                        while (numBlank > 0) {
+                            mTiles[index].Piece = null;
+                            numBlank--;
+                            file++;
+                            index = Util.FlattenPosition((file, rank), BoardDims);
+                        }
+                        continue;
+                    }
+                    var p = Piece.FromChar(pChar);
+                    mTiles[index].Piece = p;
+                    file++;
+                }
+            }
+
+            var activeString = sections[1];
+            Active = activeString switch
+            {
+                "w" => PieceColor.White,
+                "b" => PieceColor.Black,
+                _ => throw new ArgumentException()
+            };
+
+            var castlingString = sections[2];
+            CastleAvailable = CastleAvailableFlags.None;
+            if (castlingString != "-") {
+                foreach (char c in castlingString) {
+                    var castleBit = c switch
+                    {
+                        'K' => CastleAvailableFlags.WhiteKing,
+                        'Q' => CastleAvailableFlags.WhiteQueen,
+                        'k' => CastleAvailableFlags.BlackKing,
+                        'q' => CastleAvailableFlags.BlackQueen,
+                        _ => throw new ArgumentException(),
+                    };
+                    CastleAvailable |= castleBit;
+                }
+            }
+
+            var enPassantString = sections[3];
+            if (enPassantString == "-") {
+                EnPassantTarget = null;
+            } else {
+                EnPassantTarget = Vec2.FromAlgebraic(enPassantString);
+            }
+
+            var halfmoveClockString = sections[4];
+            int halfmove;
+            if (!int.TryParse(halfmoveClockString, out halfmove)) {
+                throw new ArgumentException();
+            }
+            HalfmoveClock = halfmove;
+
+            var fullmovesString = sections[5];
+            int fullmoves;
+            if (!int.TryParse(fullmovesString, out fullmoves)) {
+                throw new ArgumentException();
+            }
         }
         public bool Move(Vec2 piecePosition, Vec2 newPosition)
         {
@@ -68,23 +146,24 @@ namespace Chess
             this[piecePosition].Piece = piece;
             return true;
         }
-        public int Width { get { return mWidth; } }
-        public int Height { get { return mHeight; } }
+        public int Width { get { return mBoardDims.X; } }
+        public int Height { get { return mBoardDims.Y; } }
+        public Vec2 BoardDims { get { return mBoardDims; } }
         public Tile this[Vec2 position]
         {
             get
             {
-                int index = Util.FlattenPosition(position, new Vec2(mWidth, mHeight));
+                int index = Util.FlattenPosition(position, BoardDims);
                 return mTiles[index];
             }
             internal set
             {
-                int index = Util.FlattenPosition(position, new Vec2(mWidth, mHeight));
+                int index = Util.FlattenPosition(position, BoardDims);
                 mTiles[index] = value;
             }
         }
         public Game Game { get; private set; }
-        private readonly int mWidth, mHeight;
+        private readonly Vec2 mBoardDims;
         private readonly Tile[] mTiles;
         // Which color has the next move
         public PieceColor Active { get; set; } = PieceColor.White;
