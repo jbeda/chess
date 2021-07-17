@@ -103,13 +103,13 @@ namespace Chess.Frontends.Console
         public void Present()
         {
             string text = "";
-            for (int y = 0; y < mBuffer.Size.Y; y++)
+            for (int y = mBuffer.Size.Y - 1; y >= 0; y--)
             {
                 for (int x = 0; x < mBuffer.Size.X; x++)
                 {
                     text += mBuffer[new Vec2(x, y)];
                 }
-                if (y < mBuffer.Size.Y - 1)
+                if (y > 0)
                 {
                     text += '\n';
                 }
@@ -169,8 +169,8 @@ namespace Chess.Frontends.Console
                 }
                 surroundings |= (difference.X, difference.Y) switch
                 {
-                    (0, -1) => UP,
-                    (0, 1) => DOWN,
+                    (0, 1) => UP,
+                    (0, -1) => DOWN,
                     (-1, 0) => LEFT,
                     (1, 0) => RIGHT,
                     _ => 0
